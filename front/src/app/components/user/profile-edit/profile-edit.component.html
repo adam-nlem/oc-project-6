@@ -1,0 +1,104 @@
+<div class="profile-edit-container">
+  <div class="profile-edit-card">
+    <div *ngIf="isLoading" class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+    
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+    
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+    
+    <div *ngIf="currentUser && !isLoading">
+      <h1 class="profile-edit-title">Edit Profile</h1>
+      
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-edit-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input 
+            type="text" 
+            id="username" 
+            formControlName="username" 
+            class="form-control"
+            [ngClass]="{'is-invalid': isSubmitted && profileForm.controls['username'].errors}"
+          >
+          <div *ngIf="isSubmitted && profileForm.controls['username'].errors" class="invalid-feedback">
+            <div *ngIf="profileForm.controls['username'].errors['required']">Username is required</div>
+            <div *ngIf="profileForm.controls['username'].errors['minlength']">Username must be at least 3 characters</div>
+            <div *ngIf="profileForm.controls['username'].errors['maxlength']">Username cannot exceed 20 characters</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email" 
+            class="form-control"
+            [ngClass]="{'is-invalid': isSubmitted && profileForm.controls['email'].errors}"
+          >
+          <div *ngIf="isSubmitted && profileForm.controls['email'].errors" class="invalid-feedback">
+            <div *ngIf="profileForm.controls['email'].errors['required']">Email is required</div>
+            <div *ngIf="profileForm.controls['email'].errors['email']">Please enter a valid email address</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="currentPassword">Current Password</label>
+          <input 
+            type="password" 
+            id="currentPassword" 
+            formControlName="currentPassword" 
+            class="form-control"
+            [ngClass]="{'is-invalid': isSubmitted && profileForm.controls['currentPassword'].errors}"
+          >
+          <div *ngIf="isSubmitted && profileForm.controls['currentPassword'].errors" class="invalid-feedback">
+            <div *ngIf="profileForm.controls['currentPassword'].errors['required']">Current password is required</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="newPassword">New Password (optional)</label>
+          <input 
+            type="password" 
+            id="newPassword" 
+            formControlName="newPassword" 
+            class="form-control"
+            [ngClass]="{'is-invalid': isSubmitted && profileForm.controls['newPassword'].errors}"
+          >
+          <div *ngIf="isSubmitted && profileForm.controls['newPassword'].errors" class="invalid-feedback">
+            <div *ngIf="profileForm.controls['newPassword'].errors['pattern']">
+              Password must be at least 8 characters and include uppercase, lowercase, number, and special character
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="confirmPassword">Confirm New Password</label>
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            formControlName="confirmPassword" 
+            class="form-control"
+            [ngClass]="{'is-invalid': isSubmitted && profileForm.controls['confirmPassword'].errors}"
+          >
+          <div *ngIf="isSubmitted && profileForm.controls['confirmPassword'].errors" class="invalid-feedback">
+            <div *ngIf="profileForm.controls['confirmPassword'].errors['mismatch']">Passwords do not match</div>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
+          <button type="submit" class="btn-save" [disabled]="isLoading">
+            <span *ngIf="isLoading">Saving...</span>
+            <span *ngIf="!isLoading">Save Changes</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

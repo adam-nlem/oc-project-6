@@ -1,0 +1,75 @@
+<div class="flex flex-col min-h-screen bg-gray-100">
+  <div class="flex items-center mb-10 border-b border-gray-800 p-4">
+    <button class="bg-transparent border-none cursor-pointer p-2 text-gray-700 flex items-center justify-start hover:bg-transparent mr-4" routerLink="/main">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <img src="/assets/logo_p6.png" alt="MDD Logo" class="w-20 h-auto" />
+  </div>
+  <div class="max-w-sm mx-auto w-full">
+    <h2 class="text-center mb-8 text-2xl font-medium text-gray-700">Inscription</h2>
+    <div class="w-full">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="mb-5">
+          <label for="username" class="block mb-2 text-sm text-gray-700 font-normal">Nom d'utilisateur</label>
+          <input 
+            type="text" 
+            id="username" 
+            formControlName="username"
+            class="w-full p-3 border border-gray-300 rounded-lg text-base bg-white box-border focus:outline-none focus:border-violet-500 focus:shadow-sm focus:shadow-violet-100"
+            [ngClass]="{ 'border-red-500': isSubmitted && f['username'].errors }"
+          >
+          <div *ngIf="isSubmitted && f['username'].errors" class="text-red-500 text-xs mt-1">
+            <div *ngIf="f['username'].errors['required']">Nom d'utilisateur est requis</div>
+            <div *ngIf="f['username'].errors['minlength']">Nom d'utilisateur doit contenir au moins 3 caractères</div>
+            <div *ngIf="f['username'].errors['maxlength']">Nom d'utilisateur ne doit pas dépasser 20 caractères</div>
+          </div>
+        </div>
+        
+        <div class="mb-5">
+          <label for="email" class="block mb-2 text-sm text-gray-700 font-normal">Adresse e-mail</label>
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email"
+            class="w-full p-3 border border-gray-300 rounded-lg text-base bg-white box-border focus:outline-none focus:border-violet-500 focus:shadow-sm focus:shadow-violet-100"
+            [ngClass]="{ 'border-red-500': isSubmitted && f['email'].errors }"
+          >
+          <div *ngIf="isSubmitted && f['email'].errors" class="text-red-500 text-xs mt-1">
+            <div *ngIf="f['email'].errors['required']">E-mail est requis</div>
+            <div *ngIf="f['email'].errors['email']">Format d'e-mail invalide</div>
+            <div *ngIf="f['email'].errors['maxlength']">E-mail ne doit pas dépasser 50 caractères</div>
+          </div>
+        </div>
+        
+        <div class="mb-5">
+          <label for="password" class="block mb-2 text-sm text-gray-700 font-normal">Mot de passe</label>
+          <input 
+            type="password" 
+            id="password" 
+            formControlName="password"
+            class="w-full p-3 border border-gray-300 rounded-lg text-base bg-white box-border focus:outline-none focus:border-violet-500 focus:shadow-sm focus:shadow-violet-100"
+            [ngClass]="{ 'border-red-500': isSubmitted && f['password'].errors }"
+          >
+          <div *ngIf="isSubmitted && f['password'].errors" class="text-red-500 text-xs mt-1">
+            <div *ngIf="f['password'].errors['required']">Mot de passe est requis</div>
+            <div *ngIf="f['password'].errors['minlength']">Mot de passe doit contenir au moins 8 caractères</div>
+            <div *ngIf="f['password'].errors['pattern']">
+              Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="errorMessage" class="p-3 rounded-lg mb-5 bg-red-100 text-red-800 border border-red-200">
+          {{ errorMessage }}
+        </div>
+        
+        <div class="mt-8 text-center">
+          <button type="submit" class="bg-violet-500 text-white border-none py-3 px-6 rounded-lg text-sm font-medium cursor-pointer transition-all duration-300 min-w-[120px] hover:bg-violet-600 disabled:bg-gray-400 disabled:cursor-not-allowed" [disabled]="isLoading">
+            <span *ngIf="isLoading" class="inline-block w-4 h-4 border-2 border-current border-r-transparent rounded-full animate-spin mr-1" role="status" aria-hidden="true"></span>
+            S'inscrire
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

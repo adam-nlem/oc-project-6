@@ -1,0 +1,35 @@
+<div class="subscription-container">
+  <div class="subscription-card">
+    <h1 class="subscription-title">My Subscriptions</h1>
+    
+    <div *ngIf="isLoading" class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+    
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+    
+    <div *ngIf="subscribedTopics.length === 0 && !isLoading && !errorMessage" class="no-subscriptions-message">
+      <p>You haven't subscribed to any topics yet.</p>
+      <button class="btn-browse" routerLink="/topics">Browse Topics</button>
+    </div>
+    
+    <div *ngIf="subscribedTopics.length > 0 && !isLoading" class="subscription-list">
+      <div *ngFor="let topic of subscribedTopics" class="subscription-item">
+        <div class="topic-info">
+          <h3 class="topic-name">{{ topic.name }}</h3>
+          <p class="topic-description">{{ topic.description }}</p>
+        </div>
+        
+        <button class="btn-unsubscribe" (click)="unsubscribe(topic.id)">
+          Unsubscribe
+        </button>
+      </div>
+      
+      <div class="subscription-actions">
+        <button class="btn-browse" routerLink="/topics">Browse More Topics</button>
+      </div>
+    </div>
+  </div>
+</div>

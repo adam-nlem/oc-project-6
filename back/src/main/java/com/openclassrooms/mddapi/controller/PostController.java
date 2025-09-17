@@ -63,8 +63,7 @@ public class PostController {
     @Autowired
     private SubscriptionRepository subscriptionRepository;
 
-    //TODO: Make the api routes standard (/)
-    @GetMapping("/feed")
+    @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getFeed(
             @RequestParam(defaultValue = "0") int page,

@@ -1,31 +1,31 @@
-<div class="profile-container">
-  <div class="profile-card">
-    <div *ngIf="isLoading" class="loading-spinner">
-      <div class="spinner"></div>
+<div class="flex justify-center items-center min-h-screen bg-gray-100 p-5">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-8 relative">
+    <div *ngIf="isLoading" class="flex justify-center items-center min-h-[200px]">
+      <div class="w-10 h-10 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
     </div>
     
-    <div *ngIf="errorMessage" class="error-message">
+    <div *ngIf="errorMessage" class="text-red-600 text-center p-4 bg-red-50 rounded-lg mb-5">
       {{ errorMessage }}
     </div>
     
-    <div *ngIf="currentUser && !isLoading" class="profile-content">
-      <h1 class="profile-title">User Profile</h1>
+    <div *ngIf="currentUser && !isLoading">
+      <h1 class="text-gray-800 text-2xl mb-8 text-center font-semibold">User Profile</h1>
       
-      <div class="profile-info">
-        <div class="profile-field">
-          <span class="field-label">Username:</span>
-          <span class="field-value">{{ currentUser.username }}</span>
+      <div class="mb-8">
+        <div class="mb-4 flex flex-col">
+          <span class="font-semibold text-gray-600 mb-1">Username:</span>
+          <span class="text-base text-gray-800 py-2 border-b border-gray-200">{{ currentUser.username }}</span>
         </div>
         
-        <div class="profile-field">
-          <span class="field-label">Email:</span>
-          <span class="field-value">{{ currentUser.email }}</span>
+        <div class="mb-4 flex flex-col">
+          <span class="font-semibold text-gray-600 mb-1">Email:</span>
+          <span class="text-base text-gray-800 py-2 border-b border-gray-200">{{ currentUser.email }}</span>
         </div>
       </div>
       
-      <div class="profile-actions">
-        <button class="btn-edit" (click)="editProfile()">Edit Profile</button>
-        <button class="btn-logout" (click)="logout()">Logout</button>
+      <div class="flex justify-between mt-8 gap-4 sm:flex-row flex-col">
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded font-semibold cursor-pointer transition-all duration-300 border-0" (click)="editProfile()">Edit Profile</button>
+        <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded font-semibold cursor-pointer transition-all duration-300 border-0" (click)="logout()">Logout</button>
       </div>
     </div>
   </div>

@@ -30,7 +30,7 @@ export class RegisterPageComponent implements OnInit {
 
     // Redirect if already logged in
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/articles']);
+      this.router.navigate(['/posts']);
     }
   }
 

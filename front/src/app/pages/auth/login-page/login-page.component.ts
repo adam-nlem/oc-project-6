@@ -28,7 +28,7 @@ export class LoginPageComponent implements OnInit {
 
     // Redirect if already logged in
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/articles']);
+      this.router.navigate(['/posts']);
     }
   }
 
@@ -48,7 +48,7 @@ export class LoginPageComponent implements OnInit {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
-        this.router.navigate(['/articles']);
+        this.router.navigate(['/posts']);
       },
       error: err => {
         console.log(err);

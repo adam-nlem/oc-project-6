@@ -45,8 +45,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Comment> comments = new HashSet<>();
 
-    @ManyToMany(mappedBy = "subscribers", fetch = FetchType.LAZY)
-    private Set<Topic> subscribedTopics = new HashSet<>();
+    @OneToMany(mappedBy = "user")
+    private Set<Subscription> subscriptions = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {
@@ -125,11 +125,11 @@ public class User {
         this.comments = comments;
     }
 
-    public Set<Topic> getSubscribedTopics() {
-        return subscribedTopics;
+    public Set<Subscription> getSubscriptions() {
+        return subscriptions;
     }
 
-    public void setSubscribedTopics(Set<Topic> subscribedTopics) {
-        this.subscribedTopics = subscribedTopics;
+    public void setSubscriptions(Set<Subscription> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 }

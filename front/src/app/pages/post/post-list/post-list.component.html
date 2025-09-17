@@ -1,0 +1,53 @@
+<div class="max-w-6xl mx-auto p-5">
+  <!-- Desktop Header -->
+  <div class="hidden md:flex justify-between items-center mb-8">
+    <button mat-raised-button 
+            class="bg-purple-600 hover:bg-purple-700 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 normal-case" 
+            (click)="createPost()">
+      Créer un post
+    </button>
+    
+    <div class="flex items-center gap-2.5">
+      <label for="sort-select-desktop" class="font-medium text-gray-800">Trier par</label>
+      <mat-select id="sort-select-desktop" [(value)]="sortOrder" (selectionChange)="onSortChange($event.value)" class="min-w-[140px]">
+        <mat-option value="desc">Plus récent</mat-option>
+        <mat-option value="asc">Plus ancien</mat-option>
+      </mat-select>
+    </div>
+  </div>
+
+  <!-- Mobile Header -->
+  <div class="md:hidden space-y-4 mb-8">
+    <button mat-raised-button 
+            class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-lg transition-colors duration-200 normal-case" 
+            (click)="createPost()">
+      Créer un post
+    </button>
+    
+    <div class="flex items-center justify-center gap-2.5">
+      <label for="sort-select-mobile" class="font-medium text-gray-800">Trier par</label>
+      <mat-select id="sort-select-mobile" [(value)]="sortOrder" (selectionChange)="onSortChange($event.value)" class="min-w-[140px]">
+        <mat-option value="desc">Plus récent</mat-option>
+        <mat-option value="asc">Plus ancien</mat-option>
+      </mat-select>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5" *ngIf="!isLoading">
+    <app-post-item 
+      *ngFor="let post of posts" 
+      [post]="post"
+      [formatDate]="formatDate"
+      [truncateContent]="truncateContent"
+      (postClick)="onPostClick($event)">
+    </app-post-item>
+  </div>
+
+  <div class="flex justify-center items-center min-h-[300px]" *ngIf="isLoading">
+    <div class="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-purple-600"></div>
+  </div>
+
+  <div class="text-center py-15 px-5 text-gray-600 text-lg" *ngIf="!isLoading && posts.length === 0">
+    <p>Aucun post trouvé.</p>
+  </div>
+</div>

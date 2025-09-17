@@ -1,0 +1,32 @@
+<div class="border border-gray-300 rounded p-4">
+  <h3 class="text-base font-semibold text-gray-900 mb-2">{{ topic.name }}</h3>
+  
+  <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+    Description: {{ topic.description }}
+  </p>
+  
+  <!-- Subscribe mode (for topic list page) -->
+  <div *ngIf="mode === 'subscribe'">
+    <button 
+      *ngIf="!topic.isSubscribed"
+      class="bg-purple-600 hover:bg-purple-700 text-white font-medium px-6 py-2 rounded-lg transition-colors duration-200"
+      (click)="onToggleSubscription()">
+      S'abonner
+    </button>
+    
+    <button 
+      *ngIf="topic.isSubscribed"
+      class="bg-gray-400 text-white font-medium px-6 py-2 rounded-lg cursor-not-allowed"
+      disabled>
+      Déjà abonné
+    </button>
+  </div>
+  
+  <!-- Unsubscribe mode (for profile page) -->
+  <button 
+    *ngIf="mode === 'unsubscribe'"
+    class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+    (click)="onUnsubscribe()">
+    Se désabonner
+  </button>
+</div>

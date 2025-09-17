@@ -16,7 +16,7 @@ export class TopicService {
   }
 
   getUserSubscriptions(): Observable<Topic[]> {
-    return this.http.get<Topic[]>(`${API_URL}/subscriptions`);
+    return this.http.get<Topic[]>(`${API_URL}/subscribed`);
   }
 
   subscribeTopic(topicId: number): Observable<any> {
@@ -24,6 +24,6 @@ export class TopicService {
   }
 
   unsubscribeTopic(topicId: number): Observable<any> {
-    return this.http.delete(`${API_URL}/${topicId}/subscribe`);
+    return this.http.delete(`${API_URL}/${topicId}/unsubscribe`);
   }
 }

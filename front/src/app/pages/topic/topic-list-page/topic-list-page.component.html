@@ -1,8 +1,22 @@
-<div class="topic-list-page">
-  <div class="page-header">
-    <h1>Programming Topics</h1>
-    <p>Explore and subscribe to programming topics that interest you</p>
-  </div>
   
-  <app-topic-list></app-topic-list>
-</div>
+  <div class="max-w-6xl mx-auto p-5">
+    <div *ngIf="isLoading" class="flex justify-center items-center min-h-[300px]">
+      <div class="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-purple-600"></div>
+    </div>
+    
+    <div *ngIf="errorMessage" class="text-center py-8 text-red-600 text-lg">
+      {{ errorMessage }}
+    </div>
+    
+    <div *ngIf="topics.length === 0 && !isLoading && !errorMessage" class="text-center py-8 text-gray-600 text-lg">
+      Aucun thème n'est disponible pour l'instant
+    </div>
+    
+    <div *ngIf="topics.length > 0 && !isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <app-topic-item 
+        *ngFor="let topic of topics" 
+        [topic]="topic"
+        (toggleSubscription)="onToggleSubscription($event)">
+      </app-topic-item>
+    </div>
+  </div>

@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./main-layout.component.scss']
 })
 export class MainLayoutComponent {
+  isMobileMenuOpen = false;
+
   constructor(
     private authService: AuthService,
     private router: Router
@@ -20,5 +22,13 @@ export class MainLayoutComponent {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
   }
 }

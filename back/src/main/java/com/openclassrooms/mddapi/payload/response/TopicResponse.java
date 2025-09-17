@@ -4,13 +4,13 @@ public class TopicResponse {
     private Long id;
     private String name;
     private String description;
-    private boolean subscribed;
+    private boolean isSubscribed;
 
-    public TopicResponse(Long id, String name, String description, boolean subscribed) {
+    public TopicResponse(Long id, String name, String description, boolean isSubscribed) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.subscribed = subscribed;
+        this.isSubscribed = isSubscribed;
     }
 
     public Long getId() {
@@ -37,11 +37,11 @@ public class TopicResponse {
         this.description = description;
     }
 
-    public boolean isSubscribed() {
-        return subscribed;
+    public boolean getIsSubscribed() {
+        return isSubscribed;
     }
 
-    public void setSubscribed(boolean subscribed) {
-        this.subscribed = subscribed;
+    public void setIsSubscribed(boolean isSubscribed) {
+        this.isSubscribed = isSubscribed;
     }
 }

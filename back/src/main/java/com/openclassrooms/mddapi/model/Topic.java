@@ -36,13 +36,8 @@ public class Topic {
     @OneToMany(mappedBy = "topic")
     private Set<Post> posts = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "subscriptions",
-        joinColumns = @JoinColumn(name = "topic_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> subscribers = new HashSet<>();
+    @OneToMany(mappedBy = "topic")
+    private Set<Subscription> subscriptions = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {
@@ -91,11 +86,11 @@ public class Topic {
         this.posts = posts;
     }
 
-    public Set<User> getSubscribers() {
-        return subscribers;
+    public Set<Subscription> getSubscriptions() {
+        return subscriptions;
     }
 
-    public void setSubscribers(Set<User> subscribers) {
-        this.subscribers = subscribers;
+    public void setSubscriptions(Set<Subscription> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 }

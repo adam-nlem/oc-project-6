@@ -1,0 +1,73 @@
+<div class="max-w-4xl mx-auto p-5" *ngIf="!isLoading && post">
+  <!-- Header with back arrow and title -->
+  <div class="flex items-center mb-6">
+    <button class="flex items-center text-gray-600 hover:text-gray-800 mr-4" (click)="goBack()">
+      <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
+    <h1 class="text-2xl font-bold text-gray-800">{{ post.title }}</h1>
+  </div>
+
+  <!-- Post metadata -->
+  <div class="flex justify-between mb-6 text-sm text-gray-600">
+    <span class="font-medium">{{ formatDate(post.createdAt) }}</span>
+    <span class="font-medium">{{ post.authorUsername }}</span>
+  </div>
+
+  <div class="mb-2 text-sm text-gray-600">
+    <span class="font-medium">Thème: {{ post.topicName }}</span>
+  </div>
+
+  <!-- Post content -->
+  <div class="bg-white rounded-lg p-6 shadow-sm mb-8">
+    <p class="text-gray-700 leading-relaxed whitespace-pre-wrap break-words">
+      Content: {{ post.content }}
+    </p>
+  </div>
+
+  <hr class="border-gray-300 mb-6">
+
+  <!-- Comments section -->
+  <div class="comments-section">
+    <h2 class="text-xl font-semibold text-gray-800 mb-6">Commentaires</h2>
+
+    <!-- Existing comments -->
+    <app-comment-item *ngFor="let comment of post.comments" [comment]="comment">
+    </app-comment-item>
+
+    <!-- Comment input -->
+    <div class="flex items-end gap-3 mt-6">
+      <div class="flex-1">
+        <textarea [(ngModel)]="newComment" placeholder="Écrivez ici votre commentaire"
+          class="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          rows="3"></textarea>
+      </div>
+      <button (click)="onSubmitComment()" [disabled]="!newComment.trim() || isSubmittingComment"
+        class="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white p-3 rounded-lg transition-colors duration-200">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8">
+          </path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading state -->
+<div class="flex justify-center items-center min-h-screen" *ngIf="isLoading">
+  <div class="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-purple-600"></div>
+</div>
+
+<!-- Error state -->
+<div class="max-w-4xl mx-auto p-5" *ngIf="errorMessage && !isLoading">
+  <div class="text-center py-8 text-red-600 text-lg">
+    {{ errorMessage }}
+  </div>
+  <div class="text-center">
+    <button class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition-colors duration-200"
+      (click)="goBack()">
+      Retour aux posts
+    </button>
+  </div>
+</div>

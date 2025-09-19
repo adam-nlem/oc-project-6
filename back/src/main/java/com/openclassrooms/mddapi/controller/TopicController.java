@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.mddapi.model.Subscription;
@@ -47,7 +48,7 @@ public class TopicController {
     private SubscriptionRepository subscriptionRepository;
 
     @GetMapping
-    public ResponseEntity<List<TopicResponse>> getAllTopics() {
+    public ResponseEntity<List<TopicResponse>> getAllTopics(@RequestParam(required = false) Boolean subscribed) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean isAuthenticated = authentication != null && authentication.isAuthenticated() && 
                                  !(authentication.getPrincipal().equals("anonymousUser"));
@@ -61,15 +62,28 @@ public class TopicController {
         
         final User user = currentUser;
         
-        List<TopicResponse> topics = topicRepository.findAll().stream()
-                .map(topic -> {
-                    boolean isSubscribed = false;
-                    if (user != null) {
-                        isSubscribed = subscriptionRepository.existsByUserAndTopic(user, topic);
-                    }
-                    return new TopicResponse(topic.getId(), topic.getName(), topic.getDescription(), isSubscribed);
-                })
-                .collect(Collectors.toList());
+        List<TopicResponse> topics;
+        
+        if (subscribed != null && subscribed && user != null) {
+            // Return only subscribed topics
+            topics = subscriptionRepository.findByUser(user).stream()
+                    .map(subscription -> {
+                        Topic topic = subscription.getTopic();
+                        return new TopicResponse(topic.getId(), topic.getName(), topic.getDescription(), true);
+                    })
+                    .collect(Collectors.toList());
+        } else {
+            // Return all topics with subscription status
+            topics = topicRepository.findAll().stream()
+                    .map(topic -> {
+                        boolean isSubscribed = false;
+                        if (user != null) {
+                            isSubscribed = subscriptionRepository.existsByUserAndTopic(user, topic);
+                        }
+                        return new TopicResponse(topic.getId(), topic.getName(), topic.getDescription(), isSubscribed);
+                    })
+                    .collect(Collectors.toList());
+        }
         
         return ResponseEntity.ok(topics);
     }
@@ -141,23 +155,4 @@ public class TopicController {
         return ResponseEntity.ok(new MessageResponse("Unsubscribed from topic successfully!"));
     }
 
-    //TODO: Move this in the get ALL with a query param
-    @GetMapping("/subscribed")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<TopicResponse>> getSubscribedTopics() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        
-        User user = userRepository.findById(userDetails.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        
-        List<TopicResponse> subscribedTopics = subscriptionRepository.findByUser(user).stream()
-                .map(subscription -> {
-                    Topic topic = subscription.getTopic();
-                    return new TopicResponse(topic.getId(), topic.getName(), topic.getDescription(), true);
-                })
-                .collect(Collectors.toList());
-        
-        return ResponseEntity.ok(subscribedTopics);
-    }
 }

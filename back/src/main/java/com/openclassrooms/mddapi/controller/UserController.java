@@ -33,8 +33,7 @@ public class UserController {
     @Autowired
     private PasswordEncoder encoder;
     
-    // TODO: Replace this with a /me
-    @GetMapping("/profile")
+    @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getUserProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -52,8 +51,7 @@ public class UserController {
         return ResponseEntity.ok(profileResponse);
     }
     
-    //TODO: remove the /profile and keep a simple PUT
-    @PutMapping("/profile")
+    @PutMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> updateUserProfile(@Valid @RequestBody UpdateProfileRequest updateRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

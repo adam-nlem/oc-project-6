@@ -1,10 +1,15 @@
 package com.openclassrooms.mddapi.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,9 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.payload.request.UpdateProfileRequest;
+import com.openclassrooms.mddapi.payload.response.JwtResponse;
 import com.openclassrooms.mddapi.payload.response.MessageResponse;
 import com.openclassrooms.mddapi.payload.response.UserProfileResponse;
 import com.openclassrooms.mddapi.repository.UserRepository;
+import com.openclassrooms.mddapi.security.jwt.JwtUtils;
 import com.openclassrooms.mddapi.security.services.UserDetailsImpl;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -32,6 +39,12 @@ public class UserController {
     
     @Autowired
     private PasswordEncoder encoder;
+    
+    @Autowired
+    private JwtUtils jwtUtils;
+    
+    @Autowired
+    private AuthenticationManager authenticationManager;
     
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
@@ -87,6 +100,25 @@ public class UserController {
         
         userRepository.save(user);
         
-        return ResponseEntity.ok(new MessageResponse("User profile updated successfully!"));
+        // Create new authentication with updated user details
+        UserDetailsImpl updatedUserDetails = UserDetailsImpl.build(user);
+        Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(
+                updatedUserDetails, null, updatedUserDetails.getAuthorities());
+        
+        // Update the security context with new authentication
+        SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
+        
+        // Generate new JWT token with updated user information
+        String jwt = jwtUtils.generateJwtToken(updatedAuthentication);
+        
+        List<String> roles = updatedUserDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                                                 updatedUserDetails.getId(), 
+                                                 updatedUserDetails.getUsername(), 
+                                                 updatedUserDetails.getEmail(), 
+                                                 roles));
     }
 }

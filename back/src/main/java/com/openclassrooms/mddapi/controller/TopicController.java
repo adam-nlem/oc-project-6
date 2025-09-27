@@ -88,7 +88,7 @@ public class TopicController {
         return ResponseEntity.ok(topics);
     }
 
-    //TODO: No Ui to create a theme
+    //TODO: Implement UI to create topics in future versions
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createTopic(@Valid @RequestBody TopicRequest topicRequest) {

@@ -37,7 +37,7 @@ export class PostDetailComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        this.errorMessage = 'Failed to load article. Please try again later.';
+        this.errorMessage = 'Une erreur est survenue, veuillez réessayer.';
         this.isLoading = false;
         console.error('Error loading post:', error);
       }
@@ -72,6 +72,7 @@ export class PostDetailComponent implements OnInit {
         this.isSubmittingComment = false;
       },
       error: (error) => {
+        this.errorMessage = 'Une erreur est survenue, veuillez réessayer.';
         this.isSubmittingComment = false;
         console.error('Error adding comment:', error);
       }

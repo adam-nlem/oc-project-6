@@ -111,6 +111,7 @@ public class PostController {
         return ResponseEntity.ok(postResponses);
     }
 
+    //TODO: Implement view by topics for posts
     @GetMapping("/topic/{topicId}")
     public ResponseEntity<?> getPostsByTopic(
             @PathVariable Long topicId,
@@ -242,6 +243,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(commentResponse);
     }
 
+    //TODO: Implement post deletion in future versions
     @DeleteMapping("/{postId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> deletePost(@PathVariable Long postId) {
@@ -268,6 +270,7 @@ public class PostController {
         return ResponseEntity.ok(new MessageResponse("Post deleted successfully!"));
     }
 
+    //TODO: Implement comment deletion in future versions
     @DeleteMapping("/comments/{commentId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
